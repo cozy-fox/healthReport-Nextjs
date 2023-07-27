@@ -54,7 +54,7 @@ export const SideNav = (props) => {
           >
             <Logo />
           </Box>
-          <Box
+          <ButtonBase
             sx={{
               alignItems: 'center',
               backgroundColor: 'rgba(255, 255, 255, 0.04)',
@@ -65,20 +65,20 @@ export const SideNav = (props) => {
               mt: 2,
               p: '12px'
             }}
+            component= {NextLink}
+            href= "/select_file"
           >
             <div>
               <Typography
                 color="inherit"
                 variant="subtitle1"
               >
-                <ButtonBase
-                  component= {NextLink}
-                  href= "/select_file"
-                >{selectedFile !== null ? selectedFile : "Select File"}</ButtonBase>
+                  {selectedFile !== null ? selectedFile : "Select File"}
+   
 
               </Typography>
             </div>
-          </Box>
+          </ButtonBase>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
         <Box

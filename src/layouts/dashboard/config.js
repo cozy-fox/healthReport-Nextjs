@@ -73,6 +73,15 @@ export const items = [
     )
   },
   {
+    title: 'Oracle Database LISTENERER STATUS',
+    path: '/listener',
+    icon: (
+      <SvgIcon fontSize="small">
+        <ShoppingBagIcon />
+      </SvgIcon>
+    )
+  },
+  {
     title: 'Paritions Details AND Message Count',
     path: '/partition',
     icon: (
