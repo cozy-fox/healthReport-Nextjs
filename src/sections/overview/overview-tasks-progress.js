@@ -10,9 +10,10 @@ import {
   SvgIcon,
   Typography
 } from '@mui/material';
+import {Container, Unstable_Grid2 as Grid } from '@mui/material';
 
 export const OverviewTasksProgress = (props) => {
-  const { value, sx } = props;
+  const { title, data, sx } = props;
 
   return (
     <Card sx={sx}>
@@ -27,32 +28,28 @@ export const OverviewTasksProgress = (props) => {
             <Typography
               color="text.secondary"
               gutterBottom
-              variant="overline"
+              variant="h5"
             >
-              Task Progress
+            {title}
             </Typography>
-            <Typography variant="h4">
-              {value}%
-            </Typography>
+            <Grid
+              container
+              spacing={1}
+            >
+              {data.map((each,key) =>
+                <Grid
+                  key={key}
+                  xs={12}
+                >
+                  <Grid container>
+                    <Grid xs={12}><Typography variant='h5' color="primary.main">- Parameter {each[0]} :</Typography></Grid>
+                    <Grid xs={12}><Typography variant='h6'>{each[1]}</Typography></Grid>
+                  </Grid>
+                </Grid>
+              )}
+            </Grid>
           </Stack>
-          <Avatar
-            sx={{
-              backgroundColor: 'warning.main',
-              height: 56,
-              width: 56
-            }}
-          >
-            <SvgIcon>
-              <ListBulletIcon />
-            </SvgIcon>
-          </Avatar>
         </Stack>
-        <Box sx={{ mt: 3 }}>
-          <LinearProgress
-            value={value}
-            variant="determinate"
-          />
-        </Box>
       </CardContent>
     </Card>
   );

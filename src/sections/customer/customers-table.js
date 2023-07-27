@@ -28,6 +28,7 @@ export const CustomersTable = (props) => {
     onSelectAll,
     onSelectOne,
     page = 0,
+    title=[],
     rowsPerPage = 0,
     selected = []
   } = props;
@@ -55,32 +56,16 @@ export const CustomersTable = (props) => {
                     }}
                   />
                 </TableCell>
-                <TableCell>
-                  Name
-                </TableCell>
-                <TableCell>
-                  Email
-                </TableCell>
-                <TableCell>
-                  Location
-                </TableCell>
-                <TableCell>
-                  Phone
-                </TableCell>
-                <TableCell>
-                  Signed Up
-                </TableCell>
+                {title.length>0&&title.map((each, key)=><TableCell key={key}>{each}</TableCell>)}
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((customer) => {
-                const isSelected = selected.includes(customer.id);
-                const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
-
+              {items.length>0&&items.map((customer, key) => {
+                const isSelected = selected.includes(key);
                 return (
                   <TableRow
                     hover
-                    key={customer.id}
+                    key={key}
                     selected={isSelected}
                   >
                     <TableCell padding="checkbox">
@@ -88,39 +73,14 @@ export const CustomersTable = (props) => {
                         checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
-                            onSelectOne?.(customer.id);
+                            onSelectOne?.(key);
                           } else {
-                            onDeselectOne?.(customer.id);
+                            onDeselectOne?.(key);
                           }
                         }}
                       />
                     </TableCell>
-                    <TableCell>
-                      <Stack
-                        alignItems="center"
-                        direction="row"
-                        spacing={2}
-                      >
-                        <Avatar src={customer.avatar}>
-                          {getInitials(customer.name)}
-                        </Avatar>
-                        <Typography variant="subtitle2">
-                          {customer.name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>
-                      {customer.email}
-                    </TableCell>
-                    <TableCell>
-                      {customer.address.city}, {customer.address.state}, {customer.address.country}
-                    </TableCell>
-                    <TableCell>
-                      {customer.phone}
-                    </TableCell>
-                    <TableCell>
-                      {createdAt}
-                    </TableCell>
+                        {customer.map((each, key)=><TableCell key={key}>{each}</TableCell>)}
                   </TableRow>
                 );
               })}
@@ -144,6 +104,7 @@ export const CustomersTable = (props) => {
 CustomersTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
+  title:PropTypes.array,
   onDeselectAll: PropTypes.func,
   onDeselectOne: PropTypes.func,
   onPageChange: PropTypes.func,

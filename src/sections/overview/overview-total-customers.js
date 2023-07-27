@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
 import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
+import ListBulletIcon from '@heroicons/react/24/solid/ListBulletIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
+import { Box, Container, Unstable_Grid2 as Grid } from '@mui/material';
 
 export const OverviewTotalCustomers = (props) => {
-  const { difference, positive = false, sx, value } = props;
+  const { title, data, sx } = props;
 
   return (
     <Card sx={sx}>
@@ -19,59 +21,28 @@ export const OverviewTotalCustomers = (props) => {
           <Stack spacing={1}>
             <Typography
               color="text.secondary"
-              variant="overline"
+              variant="h5"
             >
-              Total Customers
+              {title}
             </Typography>
-            <Typography variant="h4">
-              {value}
-            </Typography>
+            <Grid
+              container
+              spacing={1}
+            >
+              {data.map((each,key) =>
+                <Grid
+                  key={key}
+                  xs={12}
+                >
+                  <Grid container>
+                    <Grid xs={6}><Typography variant='h6' align='right'>{each[0]} :</Typography></Grid>
+                    <Grid xs={6}><Typography variant='h6' align='left'>{each[1]}</Typography></Grid>
+                  </Grid>
+                </Grid>
+              )}
+            </Grid>
           </Stack>
-          <Avatar
-            sx={{
-              backgroundColor: 'success.main',
-              height: 56,
-              width: 56
-            }}
-          >
-            <SvgIcon>
-              <UsersIcon />
-            </SvgIcon>
-          </Avatar>
         </Stack>
-        {difference && (
-          <Stack
-            alignItems="center"
-            direction="row"
-            spacing={2}
-            sx={{ mt: 2 }}
-          >
-            <Stack
-              alignItems="center"
-              direction="row"
-              spacing={0.5}
-            >
-              <SvgIcon
-                color={positive ? 'success' : 'error'}
-                fontSize="small"
-              >
-                {positive ? <ArrowUpIcon /> : <ArrowDownIcon />}
-              </SvgIcon>
-              <Typography
-                color={positive ? 'success.main' : 'error.main'}
-                variant="body2"
-              >
-                {difference}%
-              </Typography>
-            </Stack>
-            <Typography
-              color="text.secondary"
-              variant="caption"
-            >
-              Since last month
-            </Typography>
-          </Stack>
-        )}
       </CardContent>
     </Card>
   );

@@ -1,27 +1,27 @@
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import PropTypes from 'prop-types';
-import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
-import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import {
   Box,
-  Button,
   Divider,
   Drawer,
   Stack,
-  SvgIcon,
   Typography,
-  useMediaQuery
+  useMediaQuery,
+  ButtonBase
 } from '@mui/material';
 import { Logo } from 'src/components/logo';
 import { Scrollbar } from 'src/components/scrollbar';
 import { items } from './config';
 import { SideNavItem } from './side-nav-item';
+import { FileContext } from '../../utils/FileContext';
+import { useContext } from 'react';
 
 export const SideNav = (props) => {
   const { open, onClose } = props;
   const pathname = usePathname();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+  const { selectedFile } = useContext(FileContext);
 
   const content = (
     <Scrollbar
@@ -71,21 +71,13 @@ export const SideNav = (props) => {
                 color="inherit"
                 variant="subtitle1"
               >
-                Devias
-              </Typography>
-              <Typography
-                color="neutral.400"
-                variant="body2"
-              >
-                Production
+                <ButtonBase
+                  component= {NextLink}
+                  href= "/select_file"
+                >{selectedFile !== null ? selectedFile : "Select File"}</ButtonBase>
+
               </Typography>
             </div>
-            <SvgIcon
-              fontSize="small"
-              sx={{ color: 'neutral.500' }}
-            >
-              <ChevronUpDownIcon />
-            </SvgIcon>
           </Box>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
@@ -114,7 +106,7 @@ export const SideNav = (props) => {
                   active={active}
                   disabled={item.disabled}
                   external={item.external}
-                  icon={item.icon}
+                  // icon={item.icon}
                   key={item.title}
                   path={item.path}
                   title={item.title}
@@ -134,13 +126,13 @@ export const SideNav = (props) => {
             color="neutral.100"
             variant="subtitle2"
           >
-            Need more features?
+            Checked Health Care Report?
           </Typography>
           <Typography
             color="neutral.500"
             variant="body2"
           >
-            Check out our Pro solution template.
+            Check out your health care.
           </Typography>
           <Box
             sx={{
@@ -158,21 +150,6 @@ export const SideNav = (props) => {
               src="/assets/devias-kit-pro.png"
             />
           </Box>
-          <Button
-            component="a"
-            endIcon={(
-              <SvgIcon fontSize="small">
-                <ArrowTopRightOnSquareIcon />
-              </SvgIcon>
-            )}
-            fullWidth
-            href="https://material-kit-pro-react.devias.io/"
-            sx={{ mt: 2 }}
-            target="_blank"
-            variant="contained"
-          >
-            Pro Live Preview
-          </Button>
         </Box>
       </Box>
     </Scrollbar>
