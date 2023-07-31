@@ -11,7 +11,7 @@ export const CompanyCard = (props) => {
   const { company } = props;
   const analysisFile = async (file) => {
     setSelectedFile(file);
-    const response = await fetch('http://localhost:3000/api/file?fileName=' + file);
+    const response = await fetch('http://13.41.136.181:3000/api/file?fileName=' + file);
     if (response.ok) {
       const data = await response.json();
       setSelectedContent(data.result);

@@ -27,7 +27,7 @@ const Page = () =>{
     console.log(selectedFile);
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/filelist');
+        const response = await fetch('http://13.41.136.181:3000/api/filelist');
         if (response.ok) {
           const data = await response.json();
           console.log(data.files);
