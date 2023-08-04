@@ -1,18 +1,13 @@
 import { useCallback, useMemo, useState } from 'react';
 import Head from 'next/head';
-import { subDays, subHours } from 'date-fns';
-import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
-import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
-import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { CustomersTable } from 'src/sections/customer/customers-table';
-import { CustomersSearch } from 'src/sections/customer/customers-search';
 import { applyPagination } from 'src/utils/apply-pagination';
-import { OverviewSales } from 'src/sections/overview/overview-sales';
 import { FileContext } from '../utils/FileContext';
 import { useContext } from 'react';
+import {beautifulStringStyles} from "../styles/index";
 
 const now = new Date();
 
@@ -38,7 +33,7 @@ const Page = () => {
   const titles = selectedContent!==null?selectedContent.datafile.titles:[];
   
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
   const customers = useCustomers(page, rowsPerPage);
   const customersIds = useCustomerIds(customers);
   const customersSelection = useSelection(customersIds);
@@ -82,12 +77,11 @@ const Page = () => {
                 <Typography variant="h4">
                 Oracle Database Datafile SIZE
                 </Typography>
-                <Stack
-                  alignItems="center"
-                  direction="row"
-                  spacing={1}
-                >
-                </Stack>
+              </Stack>
+              <Stack direction="row">
+                <Typography variant="h6" style={beautifulStringStyles.container}>
+                  Total : {data.length}
+                </Typography>
               </Stack>
             </Stack>
             <CustomersTable

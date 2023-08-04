@@ -1,24 +1,32 @@
-import { useCallback, useMemo, useState } from 'react';
+import { use, useCallback, useEffect, useState } from 'react';
 import Head from 'next/head';
 import { subDays, subHours } from 'date-fns';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
-import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
-import { Box, Button, Container, Stack, SvgIcon, Typography, Unstable_Grid2 as Grid } from '@mui/material';
-import { Avatar, Card, CardContent, Divider } from '@mui/material';
-import { useSelection } from 'src/hooks/use-selection';
+import { Box, Container, Stack, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { CustomersTable } from 'src/sections/customer/customers-table';
-import { CustomersSearch } from 'src/sections/customer/customers-search';
-import { applyPagination } from 'src/utils/apply-pagination';
-import { OverviewSales } from 'src/sections/overview/overview-sales';
 import { FileContext } from '../utils/FileContext';
 import { useContext } from 'react';
-import { CompanyCard } from 'src/sections/companies/company-card';
+import Badge from '@mui/material/Badge';
 
 const Page = () => {
   const { selectedContent } = useContext(FileContext);
+  const [state, setState]=useState(['warning', "Undetectable state"])
   const data = selectedContent !== null ? selectedContent.listener : [];
+  useEffect(() => {
+    data.length!==0 && data.forEach(each=>{
+      if(each.includes('successfully')){
+        setState(['success', "Successful state"]);
+      } else if(each.includes("connection refused")){
+        setState(["error","Connection refused"]);
+      } else if(each.includes("no listener")){
+        setState(["error", "No listener"])
+      } else{
+        setState(['warning', "Undetectable state"]);
+      }
+    })
+  },[]);
+  
   return (
     <>
       <Head>
@@ -40,9 +48,11 @@ const Page = () => {
               justifyContent="space-between"
             >
               <Stack spacing={1}>
-                <Typography variant="h4">
-                Oracle Database LISTENERER STATUS
-                </Typography>
+                <Badge badgeContent={state[1]} color={state[0]}>
+                  <Typography variant="h4">
+                    Oracle Database LISTENER STATUS
+                  </Typography>
+                </Badge>
               </Stack>
             </Stack>
             <Grid
@@ -53,7 +63,7 @@ const Page = () => {
                   xs={12}
                   key={file}
                 >
-                        {file}
+                  {file}
                 </Grid>
               ))}
             </Grid>

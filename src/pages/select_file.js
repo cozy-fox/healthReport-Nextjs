@@ -18,19 +18,19 @@ import { CompaniesSearch } from 'src/sections/companies/companies-search';
 import { useContext } from 'react';
 import { FileContext } from '../utils/FileContext';
 import { useEffect, useState } from 'react';
+import config from "./../../global.config";
 
 const Page = () =>{
   const { selectedFile, setSelectedFile,selectedContent, setSelectedContent } = useContext(FileContext);
 
   const [files, setFiles]=useState([]);
   useEffect(() => {
-    console.log(selectedFile);
     const fetchData = async () => {
       try {
-        const response = await fetch('http://13.41.136.181:3000/api/filelist');
+        const response = await fetch(config.url+'/filelist');
         if (response.ok) {
           const data = await response.json();
-          console.log(data.files);
+          // console.log(data.files);
           setFiles(data.files);
         } else {
           console.error('Request failed with status:', response.status);

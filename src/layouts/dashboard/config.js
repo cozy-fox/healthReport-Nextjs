@@ -73,7 +73,7 @@ export const items = [
     )
   },
   {
-    title: 'Oracle Database LISTENERER STATUS',
+    title: 'Oracle Database LISTENER STATUS',
     path: '/listener',
     icon: (
       <SvgIcon fontSize="small">

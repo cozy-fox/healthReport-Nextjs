@@ -13,6 +13,7 @@ import { applyPagination } from 'src/utils/apply-pagination';
 import { OverviewSales } from 'src/sections/overview/overview-sales';
 import { FileContext } from '../utils/FileContext';
 import { useContext } from 'react';
+import {beautifulStringStyles} from "../styles/index";
 
 const now = new Date();
 
@@ -41,7 +42,7 @@ const Page = () => {
   const titles = selectedContent!==null?selectedContent.tableSpace.titles:[];
   
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
   const customers = useCustomers(page, rowsPerPage);
   const customersIds = useCustomerIds(customers);
   const customersSelection = useSelection(customersIds);
@@ -85,12 +86,11 @@ const Page = () => {
                 <Typography variant="h4">
                 AMH TABLESPACE INFO DATA AND INDEX
                 </Typography>
-                <Stack
-                  alignItems="center"
-                  direction="row"
-                  spacing={1}
-                >
-                </Stack>
+              </Stack>
+              <Stack direction="row">
+                <Typography variant="h6" style={beautifulStringStyles.container}>
+                  Total : {data.length}
+                </Typography>
               </Stack>
             </Stack>
             <CustomersTable

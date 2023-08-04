@@ -4,6 +4,7 @@ import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
 import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Button, Typography } from '@mui/material';
 import { FileContext } from '../../utils/FileContext';
 import { useContext } from 'react';
+import config from "./../../../global.config";
 
 export const CompanyCard = (props) => {
   const { selectedFile, setSelectedFile, setSelectedContent } = useContext(FileContext);
@@ -11,7 +12,7 @@ export const CompanyCard = (props) => {
   const { company } = props;
   const analysisFile = async (file) => {
     setSelectedFile(file);
-    const response = await fetch('http://13.41.136.181:3000/api/file?fileName=' + file);
+    const response = await fetch(config.url+'/file?fileName=' + file);
     if (response.ok) {
       const data = await response.json();
       setSelectedContent(data.result);
