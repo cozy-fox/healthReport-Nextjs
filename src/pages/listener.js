@@ -8,25 +8,26 @@ import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { FileContext } from '../utils/FileContext';
 import { useContext } from 'react';
 import Badge from '@mui/material/Badge';
+import { beautifulStringStyles } from "../styles/index";
 
 const Page = () => {
   const { selectedContent } = useContext(FileContext);
-  const [state, setState]=useState(['warning', "Undetectable state"])
+  const [state, setState] = useState(['warning', "Undetectable state"])
   const data = selectedContent !== null ? selectedContent.listener : [];
   useEffect(() => {
-    data.length!==0 && data.forEach(each=>{
-      if(each.includes('successfully')){
+    data.length !== 0 && data.forEach(each => {
+      if (each.includes('successfully')) {
         setState(['success', "Successful state"]);
-      } else if(each.includes("connection refused")){
-        setState(["error","Connection refused"]);
-      } else if(each.includes("no listener")){
+      } else if (each.includes("connection refused")) {
+        setState(["error", "Connection refused"]);
+      } else if (each.includes("no listener")) {
         setState(["error", "No listener"])
-      } else{
+      } else {
         setState(['warning', "Undetectable state"]);
       }
     })
-  },[]);
-  
+  }, []);
+
   return (
     <>
       <Head>
@@ -48,11 +49,30 @@ const Page = () => {
               justifyContent="space-between"
             >
               <Stack spacing={1}>
-                <Badge badgeContent={state[1]} color={state[0]}>
-                  <Typography variant="h4">
-                    Oracle Database LISTENER STATUS
-                  </Typography>
-                </Badge>
+                <Typography variant="h4">
+                  Oracle Database LISTENER STATUS
+                </Typography>
+              </Stack>
+              <Stack
+                direction="row"
+                justifyContent="space-around"
+                style={beautifulStringStyles.trafficBackground}
+              >
+                <span style={{
+                  backgroundColor: state[0] == "error" ? "crimson" : "#ffcccc",
+                  ...beautifulStringStyles.trafficEach,
+                  ...(state[0] == "error" ? beautifulStringStyles.trafficSelectedRed : {})
+                }}></span>
+                <span style={{
+                  backgroundColor: state[0] == "warning" ? "darkorange" : "#ffffe6",
+                  ...beautifulStringStyles.trafficEach,
+                  ...(state[0] == "warning" ? beautifulStringStyles.trafficSelectedYellow : {})
+                }}></span>
+                <span style={{
+                  backgroundColor: state[0] == "success" ? "limegreen" : "#ebfaeb",
+                  ...beautifulStringStyles.trafficEach,
+                  ...(state[0] == "success" ? beautifulStringStyles.trafficSelectedGreen : {})
+                }}></span>
               </Stack>
             </Stack>
             <Grid
@@ -69,7 +89,7 @@ const Page = () => {
             </Grid>
           </Stack>
         </Container>
-      </Box>
+      </Box >
     </>
   );
 };

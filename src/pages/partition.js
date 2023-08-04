@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import Head from 'next/head';
 import { Box, Container, Stack, Typography  } from '@mui/material';
 import { useSelection } from 'src/hooks/use-selection';
@@ -9,6 +9,8 @@ import { FileContext } from '../utils/FileContext';
 import { useContext } from 'react';
 import {beautifulStringStyles} from "../styles/index";
 const Page = () => {
+  const [partition, setPartition] = useState([]);
+  const [message, setMessage]=useState(0);
   const useCustomers = (page, rowsPerPage) => {
     return useMemo(
       () => {
@@ -28,6 +30,14 @@ const Page = () => {
   const { selectedContent } = useContext(FileContext);
   const data = selectedContent !== null ? selectedContent.partition.data : [];
   const titles = selectedContent !== null ? selectedContent.partition.titles : [];
+  useEffect(() => {
+    data.length!==0 && data.forEach(each=>{
+      setMessage(message+parseInt(each[2].replace(/\s/g,'')));
+      if(!partition.includes(each[2])){
+        setPartition([...partition, each[1]]);
+      }
+    })
+  },[]);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
@@ -73,12 +83,15 @@ const Page = () => {
             >
               <Stack direction="row">
                 <Typography variant="h4">
-                  AMH TABLESPACE INFO DATA AND INDEX
+                Paritions Details AND Message Count
                 </Typography>
               </Stack>
-              <Stack direction="row">
+              <Stack direction="row" spacing={1}>
                 <Typography variant="h6" style={beautifulStringStyles.container}>
-                  Total : {data.length}
+                  Patitions : {partition.length}
+                </Typography>
+                <Typography variant="h6" style={beautifulStringStyles.container}>
+                  Messages : {message}
                 </Typography>
               </Stack>
             </Stack>

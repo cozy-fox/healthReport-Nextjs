@@ -9,4 +9,25 @@ export const beautifulStringStyles = {
       fontSize: '1.2rem',
       fontWeight: 500,
     },
+    trafficBackground:{
+      backgroundColor: "lightgray",
+       borderRadius: "15px", 
+       width: "130px", 
+       height: "40px",
+       paddingTop: "5px" 
+    },
+    trafficEach:{
+      width: "30px",
+      height: "30px",
+      borderRadius: "50%"
+    },
+    trafficSelectedGreen:{
+      boxShadow: "0px 0px 12px 8px limegreen"
+    },
+    trafficSelectedRed:{
+      boxShadow: "0px 0px 12px 8px crimson"
+    },
+    trafficSelectedYellow:{
+      boxShadow: "0px 0px 12px 8px darkorange"
+    }
   };
