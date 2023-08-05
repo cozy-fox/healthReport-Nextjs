@@ -9,8 +9,6 @@ import { FileContext } from '../utils/FileContext';
 import { useContext } from 'react';
 import {beautifulStringStyles} from "../styles/index";
 const Page = () => {
-  const [partition, setPartition] = useState([]);
-  const [message, setMessage]=useState(0);
   const useCustomers = (page, rowsPerPage) => {
     return useMemo(
       () => {
@@ -30,14 +28,6 @@ const Page = () => {
   const { selectedContent } = useContext(FileContext);
   const data = selectedContent !== null ? selectedContent.partition.data : [];
   const titles = selectedContent !== null ? selectedContent.partition.titles : [];
-  useEffect(() => {
-    data.length!==0 && data.forEach(each=>{
-      setMessage(message+parseInt(each[2].replace(/\s/g,'')));
-      if(!partition.includes(each[2])){
-        setPartition([...partition, each[1]]);
-      }
-    })
-  },[]);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
@@ -88,10 +78,10 @@ const Page = () => {
               </Stack>
               <Stack direction="row" spacing={1}>
                 <Typography variant="h6" style={beautifulStringStyles.container}>
-                  Patitions : {partition.length}
+                  Patitions : {data.length}
                 </Typography>
                 <Typography variant="h6" style={beautifulStringStyles.container}>
-                  Messages : {message}
+                  Messages : {data.reduce((acc, curr)=> acc + parseInt(curr[2].replace(/\s/g,'')),0)}
                 </Typography>
               </Stack>
             </Stack>
