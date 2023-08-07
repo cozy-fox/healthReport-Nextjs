@@ -36,7 +36,7 @@ export default function handler(req, res) {
     const secondRow = tableRows.eq(1);
     const firstTdContent = secondRow.find('td').first().text().replace(/\n/g, "");
     result['overview'] = firstTdContent;
-    console.log('overview:', firstTdContent);
+    // console.log('overview:', firstTdContent);
 
     const secondTable = $('table').eq(1);
     tableRows = secondTable.find('tr');
@@ -51,7 +51,7 @@ export default function handler(req, res) {
       });
     });
     result['hostInfo'] = columnWiseData;
-    console.log('hostInfo:', columnWiseData);
+    // console.log('hostInfo:', columnWiseData);
 
     const thirdTable = $('table').eq(2);
     tableRows = thirdTable.find('tr');
@@ -68,10 +68,10 @@ export default function handler(req, res) {
       }
     });
     result['parameter'] = columnWiseData;
-    console.log('parameter:', columnWiseData);
+    // console.log('parameter:', columnWiseData);
 
     result['userAccount'] = normalTableExtract(3);
-    console.log('userAccount:', result['userAccount']);
+    // console.log('userAccount:', result['userAccount']);
 
     const fifthTable = $('table').eq(4);
     tableRows = fifthTable.find('tr');
@@ -86,22 +86,22 @@ export default function handler(req, res) {
       }
     });
     result['userSize'] = { users: users, values: values };
-    console.log('userSize:', result['userSize']);
+    // console.log('userSize:', result['userSize']);
 
     result['tableSpace'] = normalTableExtract(5);
-    console.log('tableSpace:', result['tableSpace']);
+    // console.log('tableSpace:', result['tableSpace']);
 
     result['sizeGrowth'] = normalTableExtract(6);
-    console.log('sizeGrowth:', result['sizeGrowth']);
+    // console.log('sizeGrowth:', result['sizeGrowth']);
 
     result['datafile'] = normalTableExtract(7);
-    console.log('datafile:', result['datafile']);
+    // console.log('datafile:', result['datafile']);
 
     result['DB_parameter'] = normalTableExtract(8);
-    console.log('DB_parameter:', result['DB_parameter']);
+    // console.log('DB_parameter:', result['DB_parameter']);
 
     result['used_cpu'] = normalTableExtract(9);
-    console.log('used_cpu:', result['used_cpu']);
+    // console.log('used_cpu:', result['used_cpu']);
 
     tableRows = $('table').eq(10).find('tr');
     columnWiseData = [];
@@ -113,10 +113,11 @@ export default function handler(req, res) {
       }
     });
     result['listener'] = columnWiseData;
-    console.log('listener:', result['listener']);
+    // console.log('listener:', result['listener']);
 
     result['partition'] = normalTableExtract(11);
-    console.log('partition:', result['partition']);
+    result['incomplete'] = normalTableExtract(12);
+    // console.log('partition:', result['partition']);
 
     return res.status(200).json({ result })
   } else {

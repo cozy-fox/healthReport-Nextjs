@@ -7,7 +7,7 @@ const Page = () => (
   <>
     <Head>
       <title>
-        404 | Devias Kit
+      Health Care Reports
       </title>
     </Head>
     <Box

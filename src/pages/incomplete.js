@@ -26,8 +26,8 @@ const Page = () => {
     );
   };
   const { selectedContent } = useContext(FileContext);
-  const data = selectedContent !== null ? selectedContent.partition.data : [];
-  const titles = selectedContent !== null ? selectedContent.partition.titles : [];
+  const data = selectedContent !== null ? selectedContent.incomplete.data : [];
+  const titles = selectedContent !== null ? selectedContent.incomplete.titles : [];
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
@@ -73,7 +73,7 @@ const Page = () => {
             >
               <Stack direction="row">
                 <Typography variant="h4">
-                Paritions Details AND Message Count
+                Incomplete AMH Transactions
                 </Typography>
               </Stack>
               <Stack direction="row" spacing={1}>
@@ -81,7 +81,7 @@ const Page = () => {
                   Patitions : {data.length}
                 </Typography>
                 <Typography variant="h6" style={beautifulStringStyles.container}>
-                  Messages : {data.reduce((acc, curr)=> acc + parseInt(curr[2].replace(/\s/g,'')),0)}
+                  Sum : {data.reduce((acc, curr)=> acc + parseInt(curr[5].replace(/\s/g,'')),0)}
                 </Typography>
               </Stack>
             </Stack>

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
-import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
 import ClockIcon from '@heroicons/react/24/solid/ClockIcon';
-import { Avatar, Box, Card, CardContent, Divider, Stack, SvgIcon, Button, Typography } from '@mui/material';
+import {  Card, CardContent, Divider, Stack, SvgIcon, Button, Typography } from '@mui/material';
 import { FileContext } from '../../utils/FileContext';
 import { useContext } from 'react';
 import config from "./../../../global.config";
@@ -12,7 +11,7 @@ export const CompanyCard = (props) => {
   const { company } = props;
   const analysisFile = async (file) => {
     setSelectedFile(file);
-    const response = await fetch(config.url+'/file?fileName=' + file);
+    const response = await fetch(config.url + '/file?fileName=' + file);
     if (response.ok) {
       const data = await response.json();
       setSelectedContent(data.result);
@@ -31,7 +30,7 @@ export const CompanyCard = (props) => {
       <CardContent>
         <Typography
           align="center"
-          color={selectedFile === company?'grey':""}
+          color={selectedFile === company ? 'grey' : ""}
           gutterBottom
           variant="h6"
         >
@@ -69,7 +68,6 @@ export const CompanyCard = (props) => {
           alignItems="center"
           direction="row"
         >
-
           {selectedFile === company ? <Button variant="contained"
             disabled
             onClick={() => analysisFile(company)}>

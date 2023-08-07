@@ -49,7 +49,7 @@ export const SideNav = (props) => {
             sx={{
               display: 'inline-flex',
               height: 32,
-              width: 32
+              width:32
             }}
           >
             <Logo />
@@ -65,17 +65,15 @@ export const SideNav = (props) => {
               mt: 2,
               p: '12px'
             }}
-            component= {NextLink}
-            href= "/select_file"
+            component={NextLink}
+            href="/select_file"
           >
             <div>
               <Typography
                 color="inherit"
                 variant="subtitle1"
               >
-                  {selectedFile !== null ? selectedFile : "Select File"}
-   
-
+                {selectedFile !== null ? selectedFile : "Select File"}
               </Typography>
             </div>
           </ButtonBase>
