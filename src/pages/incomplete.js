@@ -81,7 +81,7 @@ const Page = () => {
                   Patitions : {data.length}
                 </Typography>
                 <Typography variant="h6" style={beautifulStringStyles.container}>
-                  Sum : {data.reduce((acc, curr)=> acc + parseInt(curr[5].replace(/\s/g,'')),0)}
+                  Total : {data.reduce((acc, curr)=> acc + parseInt(curr[5].replace(/\s/g,'')),0)}
                 </Typography>
               </Stack>
             </Stack>
