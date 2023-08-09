@@ -1,13 +1,14 @@
-import PropTypes from 'prop-types';
+import { StaticDateTimePicker } from '@mui/x-date-pickers/StaticDateTimePicker';
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
-import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
-import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import {
   Avatar,
   Badge,
   Box,
-  IconButton,
+  IconButton, InputBase, Popover,
   Stack,
   SvgIcon,
   Tooltip,
@@ -15,30 +16,24 @@ import {
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { usePopover } from 'src/hooks/use-popover';
-import { AccountPopover } from './account-popover';
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
 
 export const TopNav = (props) => {
-  const { onNavOpen } = props;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const accountPopover = usePopover();
-
   return (
     <>
       <Box
         component="header"
         sx={{
           backdropFilter: 'blur(6px)',
-          backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
+          backgroundColor: (theme) => alpha(theme.palette.background.default, 0.5),
           position: 'sticky',
-          left: {
-            lg: `${SIDE_NAV_WIDTH}px`
-          },
           top: 0,
           width: {
-            lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`
+            lg: `calc(100%)`
           },
           zIndex: (theme) => theme.zIndex.appBar
         }}
@@ -57,69 +52,83 @@ export const TopNav = (props) => {
             alignItems="center"
             direction="row"
             spacing={2}
+            width="70%"
           >
-            {!lgUp && (
-              <IconButton onClick={onNavOpen}>
-                <SvgIcon fontSize="small">
-                  <Bars3Icon />
-                </SvgIcon>
-              </IconButton>
-            )}
-            <Tooltip title="Search">
-              <IconButton>
-                <SvgIcon fontSize="small">
-                  <MagnifyingGlassIcon />
-                </SvgIcon>
-              </IconButton>
-            </Tooltip>
+            <SvgIcon fontSize="small">
+              <MagnifyingGlassIcon />
+            </SvgIcon>
+            <InputBase
+              sx={{
+                ml: 1,
+                width: "100%",
+                height: "100%",
+                flex: 1,
+                borderBottom: '1px grey solid',
+                display: open ? 'flex' : 'none',
+              }}
+              placeholder="Search Oracle File"
+              inputProps={{ 'aria-label': 'search file' }}
+              value={props.search}
+              onChange={e=>{ props.setSearch(e.target.value);}}
+            />
           </Stack>
           <Stack
             alignItems="center"
             direction="row"
             spacing={2}
           >
-            <Tooltip title="Contacts">
-              <IconButton>
-                <SvgIcon fontSize="small">
-                  <UsersIcon />
-                </SvgIcon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Notifications">
-              <IconButton>
-                <Badge
+            <Tooltip title="Sort By Date Ranges">
+              <IconButton
+                onClick={accountPopover.handleOpen}
+                ref={accountPopover.anchorRef}
+              >
+                {/* <Badge
                   badgeContent={4}
                   color="success"
                   variant="dot"
-                >
+                > */}
                   <SvgIcon fontSize="small">
-                    <BellIcon />
+                    <CalendarMonthIcon />
                   </SvgIcon>
-                </Badge>
+                {/* </Badge> */}
               </IconButton>
             </Tooltip>
-            <Avatar
-              onClick={accountPopover.handleOpen}
-              ref={accountPopover.anchorRef}
-              sx={{
-                cursor: 'pointer',
-                height: 40,
-                width: 40
-              }}
-              src="/assets/avatars/avatar-anika-visser.png"
-            />
+            <Tooltip title="Sort By Time">
+              <IconButton
+                onClick={()=>{props.sort==='recent'?props.setSort('late'):props.setSort('recent')}}
+              >
+                <SvgIcon fontSize="small">
+                  {props.sort=='recent'?<KeyboardDoubleArrowUpIcon />:<KeyboardDoubleArrowDownIcon />}
+                </SvgIcon>
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Stack>
+        <Popover
+          anchorEl={accountPopover.anchorRef.current}
+          anchorOrigin={{
+            horizontal: 'left',
+            vertical: 'bottom'
+          }}
+          onClose={accountPopover.handleClose}
+          open={accountPopover.open}
+        >
+          <Stack direction={"row"}>
+            <StaticDateTimePicker
+            value={props.range[0]}
+            onChange={(e)=>{props.setRange([e, props.range[1]]); console.log(props.range)}} 
+            orientation="landscape" 
+            />
+            <StaticDateTimePicker 
+            value={props.range[1]}
+            onChange={(e)=>{props.setRange([props.range[0], e]); console.log(props.range)}} 
+            orientation="landscape" 
+            />
+          </Stack>
+        </Popover>
       </Box>
-      <AccountPopover
-        anchorEl={accountPopover.anchorRef.current}
-        open={accountPopover.open}
-        onClose={accountPopover.handleClose}
-      />
+
     </>
   );
 };
 
-TopNav.propTypes = {
-  onNavOpen: PropTypes.func
-};

@@ -73,7 +73,7 @@ export const SideNav = (props) => {
                 color="inherit"
                 variant="subtitle1"
               >
-                {selectedFile !== null ? selectedFile : "Select File"}
+            Select File
               </Typography>
             </div>
           </ButtonBase>
