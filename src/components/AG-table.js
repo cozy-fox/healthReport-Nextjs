@@ -1,25 +1,24 @@
 
 import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
+import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import 'ag-grid-enterprise';
 
-
-
+import { beautifulStringStyles } from "../styles/index";
 
 export const Table = (props) => {
 
     const gridRef = useRef();
     const gridStyle = useMemo(() => ({ width: '100%', height: props.height }), []);
-    const [rowData, setRowData] = useState();
+    const [rowData, setRowData] = useState([]);
     const defaultColDef = useMemo(() => {
         return {
             flex: 1,
             filtre: true,
             minWidth: 100,
             resizable: true,
-            floatingFilter: true,
             sortable: true
         };
     }, []);
@@ -38,7 +37,7 @@ export const Table = (props) => {
                         <b>Custom Stats</b>
                     </h2>
                     <dl style={{ fontSize: 'large', padding: '30px 40px 10px 30px' }}>
-                        {props.total.length!==0&&Object.entries(props.total).map(([key, value]) => {
+                        {props.total.length !== 0 && Object.entries(props.total).map(([key, value]) => {
                             return (
                                 <dt
                                     style={totalStyle}
@@ -107,29 +106,57 @@ export const Table = (props) => {
     }, []);
 
     return (
+        <Box
+            component="main"
+            sx={{
+                flexGrow: 1,
+                py: 8
+            }}
+        >
+            <Container maxWidth="xl">
+                <Stack spacing={3}>
+                    <div style={gridStyle} className="ag-theme-alpine">
+                        <Stack
+                            direction="row"
+                            justifyContent="space-between"
+                            spacing={4}
+                            style={{ marginBottom: "10px" }}
+                        >
+                            <Stack spacing={1}>
+                                <Typography variant="h5">
+                                    {props.title}
+                                </Typography>
+                            </Stack>
+                            <Stack direction="row">
+                                <Typography
+                                    variant="h6"
+                                    style={beautifulStringStyles.container}>
+                                    Total : {rowData.length}
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    onClick={onBtExport}
+                                >
+                                    Export to Excel
+                                </Button>
 
-        <div style={gridStyle} className="ag-theme-alpine">
-            <div>
-                <button
-                    onClick={onBtExport}
-                    style={{ marginBottom: '5px', fontWeight: 'bold' }}
-                >
-                    Export to Excel
-                </button>
-            </div>
-            <AgGridReact
-                ref={gridRef}
-                rowData={rowData}
-                columnDefs={props.property}
-                defaultColDef={defaultColDef}
-                sideBar={sideBar}
-                icons={icons}
-                enableCharts={true}
-                enableRangeSelection={true}
-                // onGridReady={onGridReady}
-                pagination={true}
-            />
-        </div>
+                            </Stack>
+                        </Stack>
 
+                        <AgGridReact
+                            ref={gridRef}
+                            rowData={rowData}
+                            columnDefs={props.property}
+                            defaultColDef={defaultColDef}
+                            sideBar={sideBar}
+                            icons={icons}
+                            enableCharts={true}
+                            enableRangeSelection={true}
+                            pagination={true}
+                        />
+                    </div>
+                </Stack>
+            </Container>
+        </Box>
     );
 };

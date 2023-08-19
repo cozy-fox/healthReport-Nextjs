@@ -1,6 +1,6 @@
 export const beautifulStringStyles = {
     container: {
-      backgroundColor: '#3f51b5',
+      backgroundColor: '#91b909',
       color: '#ffffff',
       padding: '8px',
       borderRadius: '4px',
@@ -8,6 +8,7 @@ export const beautifulStringStyles = {
       display: 'inline-block',
       fontSize: '1.2rem',
       fontWeight: 500,
+      marginRight:"10px"
     },
     trafficBackground:{
       backgroundColor: "lightgray",

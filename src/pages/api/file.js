@@ -97,11 +97,13 @@ export default function handler(req, res) {
     result['datafile'] = normalTableExtract(7);
     // console.log('datafile:', result['datafile']);
 
-    result['used_cpu_1'] = normalTableExtract(8);
-    result['used_cpu_2'] = normalTableExtract(9);
-    result['used_cpu_3'] = normalTableExtract(10);
+    result['DB_parameter'] = normalTableExtract(8);
 
-    tableRows = $('table').eq(11).find('tr');
+    result['used_cpu_1'] = normalTableExtract(9);
+    result['used_cpu_2'] = normalTableExtract(10);
+    result['used_cpu_3'] = normalTableExtract(11);
+
+    tableRows = $('table').eq(12).find('tr');
     columnWiseData = [];
     tableRows.each((index, row) => {
       if (index !== 0) {
@@ -113,11 +115,11 @@ export default function handler(req, res) {
     result['listener'] = columnWiseData;
     // console.log('listener:', result['listener']);
 
-    result['partition'] = normalTableExtract(12);
+    result['partition'] = normalTableExtract(13);
 
-    result['incomplete'] = normalTableExtract(13);
+    result['incomplete'] = normalTableExtract(14);
 
-    result['DB_parameter'] = normalTableExtract(14);
+
     // console.log('DB_parameter:', result['DB_parameter']);
 
     return res.status(200).json({ result })

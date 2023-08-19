@@ -55,7 +55,7 @@ export const items = [
     )
   },
   {
-    title: 'Oracle Database PARAMETERS SIZE',
+    title: 'Oracle Database Parameters Utilization Min And Max',
     path: '/database_parameter_size',
     icon: (
       <SvgIcon fontSize="small">

@@ -1,13 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
 import Head from 'next/head';
-import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { FileContext } from '../utils/FileContext';
 import { useContext } from 'react';
-import { beautifulStringStyles } from "../styles/index";
 import { Table } from "./../components/AG-table";
-
-
 
 const Page = () => {
   const property = [
@@ -17,13 +13,29 @@ const Page = () => {
     { field: "AMT_USED", filter: "agNumberColumnFilter" },
     { field: "PCT_USED", filter: "agNumberColumnFilter" },
   ]
-  
+
   const numberProperty = ["SID", "AMT_USED", "PCT_USED"]
-  const [total, setTotal]=useState({"SID":0,"AMT_USED":0, "PCT_USED":0});
+  const [total, setTotal] = useState({ "SID": 0, "AMT_USED": 0, "PCT_USED": 0 });
 
   const { selectedContent } = useContext(FileContext);
   const data = selectedContent !== null ? selectedContent.used_cpu_1.data : [];
-  const titles = selectedContent !== null ? selectedContent.used_cpu_1.titles : [];
+
+  const property1 = [
+    { field: "AMH", filter: "agMultiColumnFilter" },
+    { field: "USE_BY_AMH", filter: "agNumberColumnFilter" },
+  ]
+
+  const numberProperty1 = ["USE_BY_AMH"]
+  const [total1, setTotal1] = useState({ "USE_BY_AMH": 0 });
+  const data1 = selectedContent !== null ? selectedContent.used_cpu_2.data : [];
+
+  const property2 = [
+    { field: "USAGE_MESSAGE", filter: "agMultiColumnFilter" }
+  ]
+
+  const numberProperty2 = []
+  const [total2, setTotal2] = useState({});
+  const data2 = selectedContent !== null ? selectedContent.used_cpu_3.data : [];
 
   return (
     <>
@@ -32,44 +44,33 @@ const Page = () => {
           Health Care Reports
         </title>
       </Head>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8
-        }}
-      >
-        <Container maxWidth="xl">
-          <Stack spacing={3}>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              spacing={4}
-            >
-              <Stack spacing={1}>
-                <Typography variant="h4">
-                  Oracle Database CPU USED BY AMH
-                </Typography>
-              </Stack>
-              <Stack direction="row">
-                <Typography
-                  variant="h6"
-                  style={beautifulStringStyles.container}>
-                  Total : {data.length}
-                </Typography>
-              </Stack>
-            </Stack>
-            <Table
-              property={property}
-              numberProperty={numberProperty}
-              data={data}
-              total={total}
-              setTotal={setTotal}
-              height="50vh"
-            />
-          </Stack>
-        </Container>
-      </Box>
+      <Table
+        title={"Oracle Database CPU USED BY AMH"}
+        property={property}
+        numberProperty={numberProperty}
+        data={data}
+        total={total}
+        setTotal={setTotal}
+        height="50vh"
+      />
+      <Table
+        title={"Oracle Database CPU USED BY AMH"}
+        property={property1}
+        numberProperty={numberProperty1}
+        data={data1}
+        total={total1}
+        setTotal={setTotal1}
+        height="25vh"
+      />
+      <Table
+        title={"Oracle Database CPU USED BY AMH"}
+        property={property2}
+        numberProperty={numberProperty2}
+        data={data2}
+        total={total2}
+        setTotal={setTotal2}
+        height="25vh"
+      />
     </>
   );
 };
@@ -81,18 +82,3 @@ Page.getLayout = (page) => (
 );
 
 export default Page;
-
-{/* <CustomersTable
-              count={data.length}
-              items={customers}
-              title={titles}
-              onDeselectAll={customersSelection.handleDeselectAll}
-              onDeselectOne={customersSelection.handleDeselectOne}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              onSelectAll={customersSelection.handleSelectAll}
-              onSelectOne={customersSelection.handleSelectOne}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              selected={customersSelection.selected}
-            /> */}

@@ -1,56 +1,25 @@
 import { useCallback, useMemo, useState } from 'react';
 import Head from 'next/head';
-import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
-import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { CustomersTable } from 'src/sections/customer/customers-table';
-import { applyPagination } from 'src/utils/apply-pagination';
 import { FileContext } from '../utils/FileContext';
 import { useContext } from 'react';
-import {beautifulStringStyles} from "../styles/index";
-
-const now = new Date();
+import { Table } from "./../components/AG-table";
 
 const Page = () => {
-  const useCustomers = (page, rowsPerPage) => {
-    return useMemo(
-      () => {
-        return applyPagination(data, page, rowsPerPage);
-      },
-      [page, rowsPerPage]
-    );
-  };
-  const useCustomerIds = (customers) => {
-    return useMemo(
-      () => {
-        return customers.map((customer, key) => key);
-      },
-      [customers]
-    );
-  };
+  const property = [
+    { field: "Datafile Name", filter: "agMultiColumnFilter" },
+    { field: "TABLESPACE_NAME", filter: "agMultiColumnFilter" },
+    { field: "ALLOCATED_MB", filter: "agNumberColumnFilter" },
+    { field: "USED_MB", filter: "agNumberColumnFilter" },
+    { field: "FREE_MB", filter: "agNumberColumnFilter" },
+    { field: "AUT", filter: "agMultiColumnFilter" },
+  ]
+
+  const numberProperty = ["ALLOCATED_MB", "USED_MB", "FREE_MB"]
+  const [total, setTotal] = useState({ "ALLOCATED_MB": 0, "USED_MB": 0, "FREE_MB": 0 });
+
   const { selectedContent } = useContext(FileContext);
   const data =selectedContent!==null?selectedContent.datafile.data:[];
-  const titles = selectedContent!==null?selectedContent.datafile.titles:[];
-  
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(20);
-  const customers = useCustomers(page, rowsPerPage);
-  const customersIds = useCustomerIds(customers);
-  const customersSelection = useSelection(customersIds);
-
-  const handlePageChange = useCallback(
-    (event, value) => {
-      setPage(value);
-    },
-    []
-  );
-
-  const handleRowsPerPageChange = useCallback(
-    (event) => {
-      setRowsPerPage(event.target.value);
-    },
-    []
-  );
 
   return (
     <>
@@ -59,48 +28,15 @@ const Page = () => {
           Health Care Reports
         </title>
       </Head>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8
-        }}
-      >
-        <Container maxWidth="xl">
-          <Stack spacing={3}>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              spacing={4}
-            >
-              <Stack spacing={1}>
-                <Typography variant="h4">
-                Oracle Database Datafile SIZE
-                </Typography>
-              </Stack>
-              <Stack direction="row">
-                <Typography variant="h6" style={beautifulStringStyles.container}>
-                  Total : {data.length}
-                </Typography>
-              </Stack>
-            </Stack>
-            <CustomersTable
-              count={data.length}
-              items={customers}
-              title={titles}
-              onDeselectAll={customersSelection.handleDeselectAll}
-              onDeselectOne={customersSelection.handleDeselectOne}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              onSelectAll={customersSelection.handleSelectAll}
-              onSelectOne={customersSelection.handleSelectOne}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              selected={customersSelection.selected}
-            />
-          </Stack>
-        </Container>
-      </Box>
+      <Table
+        title={"Oracle Database Datafile SIZE"}
+        property={property}
+        numberProperty={numberProperty}
+        data={data}
+        total={total}
+        setTotal={setTotal}
+        height="100vh"
+      />
     </>
   );
 };
