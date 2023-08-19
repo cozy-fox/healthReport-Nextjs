@@ -1,0 +1,135 @@
+
+import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import 'ag-grid-enterprise';
+
+
+
+
+export const Table = (props) => {
+
+    const gridRef = useRef();
+    const gridStyle = useMemo(() => ({ width: '100%', height: props.height }), []);
+    const [rowData, setRowData] = useState();
+    const defaultColDef = useMemo(() => {
+        return {
+            flex: 1,
+            filtre: true,
+            minWidth: 100,
+            resizable: true,
+            floatingFilter: true,
+            sortable: true
+        };
+    }, []);
+    const icons = useMemo(() => {
+        return {
+            'custom-stats': '<span class="ag-icon ag-icon-custom-stats"></span>',
+        };
+    }, []);
+
+    const EE = () => {
+        const totalStyle = { paddingBottom: '15px' };
+        return (
+            <div style={{ textAlign: 'center' }}>
+                <span>
+                    <h2>
+                        <b>Custom Stats</b>
+                    </h2>
+                    <dl style={{ fontSize: 'large', padding: '30px 40px 10px 30px' }}>
+                        {props.total.length!==0&&Object.entries(props.total).map(([key, value]) => {
+                            return (
+                                <dt
+                                    style={totalStyle}
+                                    key={key}>
+                                    Total {key}: <b>{value}</b>
+                                </dt>)
+                        })}
+                    </dl>
+                </span>
+            </div>
+        )
+    }
+
+    const sideBar = useMemo(() => {
+        return {
+            toolPanels: [
+                {
+                    id: 'columns',
+                    labelDefault: 'Columns',
+                    labelKey: 'columns',
+                    iconKey: 'columns',
+                    toolPanel: 'agColumnsToolPanel',
+                },
+                {
+                    id: 'filters',
+                    labelDefault: 'Filters',
+                    labelKey: 'filters',
+                    iconKey: 'filter',
+                    toolPanel: 'agFiltersToolPanel',
+                },
+                {
+                    id: 'customStats',
+                    labelDefault: 'Custom Stats',
+                    labelKey: 'customStats',
+                    iconKey: 'custom-stats',
+                    toolPanel: EE
+                }
+            ],
+            defaultToolPanel: 'customStats',
+        };
+    }, []);
+
+
+    useEffect(() => {
+        let result = []
+        let total = props.total;
+        for (const each of props.data) {
+            let row = {}
+            for (let i = 0; i < each.length; i++) {
+                const key = props.property[i].field;
+                if (props.numberProperty.includes(key)) {
+                    row[key] = parseFloat(each[i]);
+                    total[key] += parseFloat(each[i]);
+                } else {
+                    row[key] = each[i];
+                }
+            }
+            result.push(row);
+        }
+        setRowData(result);
+        props.setTotal(total);
+    }, []);
+
+    const onBtExport = useCallback(() => {
+        gridRef.current.api.exportDataAsExcel();
+    }, []);
+
+    return (
+
+        <div style={gridStyle} className="ag-theme-alpine">
+            <div>
+                <button
+                    onClick={onBtExport}
+                    style={{ marginBottom: '5px', fontWeight: 'bold' }}
+                >
+                    Export to Excel
+                </button>
+            </div>
+            <AgGridReact
+                ref={gridRef}
+                rowData={rowData}
+                columnDefs={props.property}
+                defaultColDef={defaultColDef}
+                sideBar={sideBar}
+                icons={icons}
+                enableCharts={true}
+                enableRangeSelection={true}
+                // onGridReady={onGridReady}
+                pagination={true}
+            />
+        </div>
+
+    );
+};

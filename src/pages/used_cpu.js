@@ -1,55 +1,29 @@
 import { useCallback, useMemo, useState } from 'react';
 import Head from 'next/head';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
-import { useSelection } from 'src/hooks/use-selection';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { CustomersTable } from 'src/sections/customer/customers-table';
-import { applyPagination } from 'src/utils/apply-pagination';
 import { FileContext } from '../utils/FileContext';
 import { useContext } from 'react';
-import {beautifulStringStyles} from "../styles/index";
-const now = new Date();
+import { beautifulStringStyles } from "../styles/index";
+import { Table } from "./../components/AG-table";
+
+
 
 const Page = () => {
-  const useCustomers = (page, rowsPerPage) => {
-    return useMemo(
-      () => {
-        return applyPagination(data, page, rowsPerPage);
-      },
-      [page, rowsPerPage]
-    );
-  };
-  const useCustomerIds = (customers) => {
-    return useMemo(
-      () => {
-        return customers.map((customer, key) => key);
-      },
-      [customers]
-    );
-  };
-  const { selectedContent } = useContext(FileContext);
-  const data =selectedContent!==null?selectedContent.userAccount.data:[];
-  const titles = selectedContent!==null?selectedContent.userAccount.titles:[];
+  const property = [
+    { field: "'TOPLOGICALI/OPROCESS'", filter: "agMultiColumnFilter" },
+    { field: "SID", filter: "agNumberColumnFilter" },
+    { field: "USERNAME", filter: "agMultiColumnFilter" },
+    { field: "AMT_USED", filter: "agNumberColumnFilter" },
+    { field: "PCT_USED", filter: "agNumberColumnFilter" },
+  ]
   
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(20);
-  const customers = useCustomers(page, rowsPerPage);
-  const customersIds = useCustomerIds(customers);
-  const customersSelection = useSelection(customersIds);
+  const numberProperty = ["SID", "AMT_USED", "PCT_USED"]
+  const [total, setTotal]=useState({"SID":0,"AMT_USED":0, "PCT_USED":0});
 
-  const handlePageChange = useCallback(
-    (event, value) => {
-      setPage(value);
-    },
-    []
-  );
-
-  const handleRowsPerPageChange = useCallback(
-    (event) => {
-      setRowsPerPage(event.target.value);
-    },
-    []
-  );
+  const { selectedContent } = useContext(FileContext);
+  const data = selectedContent !== null ? selectedContent.used_cpu_1.data : [];
+  const titles = selectedContent !== null ? selectedContent.used_cpu_1.titles : [];
 
   return (
     <>
@@ -74,28 +48,24 @@ const Page = () => {
             >
               <Stack spacing={1}>
                 <Typography variant="h4">
-                Oracle Database CPU USED BY AMH
+                  Oracle Database CPU USED BY AMH
                 </Typography>
               </Stack>
               <Stack direction="row">
-                <Typography variant="h6" style={beautifulStringStyles.container}>
+                <Typography
+                  variant="h6"
+                  style={beautifulStringStyles.container}>
                   Total : {data.length}
                 </Typography>
               </Stack>
             </Stack>
-            <CustomersTable
-              count={data.length}
-              items={customers}
-              title={titles}
-              onDeselectAll={customersSelection.handleDeselectAll}
-              onDeselectOne={customersSelection.handleDeselectOne}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              onSelectAll={customersSelection.handleSelectAll}
-              onSelectOne={customersSelection.handleSelectOne}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              selected={customersSelection.selected}
+            <Table
+              property={property}
+              numberProperty={numberProperty}
+              data={data}
+              total={total}
+              setTotal={setTotal}
+              height="50vh"
             />
           </Stack>
         </Container>
@@ -111,3 +81,18 @@ Page.getLayout = (page) => (
 );
 
 export default Page;
+
+{/* <CustomersTable
+              count={data.length}
+              items={customers}
+              title={titles}
+              onDeselectAll={customersSelection.handleDeselectAll}
+              onDeselectOne={customersSelection.handleDeselectOne}
+              onPageChange={handlePageChange}
+              onRowsPerPageChange={handleRowsPerPageChange}
+              onSelectAll={customersSelection.handleSelectAll}
+              onSelectOne={customersSelection.handleSelectOne}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              selected={customersSelection.selected}
+            /> */}

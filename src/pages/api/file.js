@@ -16,13 +16,13 @@ export default function handler(req, res) {
       tableRows.each((index, row) => {
         if (index === 0) {
           $(row).children('th').each((i, cell) => {
-            titles.push($(cell).text().replace(/\n/g, ""));
+            titles.push($(cell).text().replace(/\n/g, "").replace(/^\s+|\s+$/g, ""));
           });
         } else {
           let resultRow = [];
           const rowData = $(row).children('td');
           rowData.each((i, cell) => {
-            const cellData = $(cell).text().replace(/\n/g, "");
+            const cellData = $(cell).text().replace(/\n/g, "").replace(/^\s+|\s+$/g, "");
             resultRow.push(cellData);
           });
           columnWiseData.push(resultRow);
@@ -97,13 +97,11 @@ export default function handler(req, res) {
     result['datafile'] = normalTableExtract(7);
     // console.log('datafile:', result['datafile']);
 
-    result['DB_parameter'] = normalTableExtract(8);
-    // console.log('DB_parameter:', result['DB_parameter']);
+    result['used_cpu_1'] = normalTableExtract(8);
+    result['used_cpu_2'] = normalTableExtract(9);
+    result['used_cpu_3'] = normalTableExtract(10);
 
-    result['used_cpu'] = normalTableExtract(9);
-    // console.log('used_cpu:', result['used_cpu']);
-
-    tableRows = $('table').eq(10).find('tr');
+    tableRows = $('table').eq(11).find('tr');
     columnWiseData = [];
     tableRows.each((index, row) => {
       if (index !== 0) {
@@ -115,9 +113,12 @@ export default function handler(req, res) {
     result['listener'] = columnWiseData;
     // console.log('listener:', result['listener']);
 
-    result['partition'] = normalTableExtract(11);
-    result['incomplete'] = normalTableExtract(12);
-    // console.log('partition:', result['partition']);
+    result['partition'] = normalTableExtract(12);
+
+    result['incomplete'] = normalTableExtract(13);
+
+    result['DB_parameter'] = normalTableExtract(14);
+    // console.log('DB_parameter:', result['DB_parameter']);
 
     return res.status(200).json({ result })
   } else {

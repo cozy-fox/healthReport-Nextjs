@@ -14,6 +14,11 @@
     "lint-fix": "next lint --fix"
   },
   "dependencies": {
+    "@ag-grid-community/client-side-row-model": "^30.0.6",
+    "@ag-grid-enterprise/column-tool-panel": "^30.0.6",
+    "@ag-grid-enterprise/filter-tool-panel": "^30.0.6",
+    "@ag-grid-enterprise/menu": "^30.0.6",
+    "@ag-grid-enterprise/status-bar": "^30.0.6",
     "@emotion/cache": "11.10.5",
     "@emotion/react": "11.10.6",
     "@emotion/server": "11.10.0",
@@ -24,6 +29,9 @@
     "@mui/material": "5.11.10",
     "@mui/system": "5.11.9",
     "@mui/x-date-pickers": "^6.0.0",
+    "ag-grid-community": "^30.0.6",
+    "ag-grid-enterprise": "^30.0.6",
+    "ag-grid-react": "^30.0.6",
     "apexcharts": "3.37.0",
     "cheerio": "^1.0.0-rc.12",
     "date-fns": "2.29.3",
