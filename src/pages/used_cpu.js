@@ -54,7 +54,7 @@ const Page = () => {
         height="50vh"
       />
       <Table
-        title={"Oracle Database CPU USED BY AMH"}
+        title={"AMH Session Summary"}
         property={property1}
         numberProperty={numberProperty1}
         data={data1}
@@ -63,7 +63,7 @@ const Page = () => {
         height="25vh"
       />
       <Table
-        title={"Oracle Database CPU USED BY AMH"}
+        title={"Total Session Summary"}
         property={property2}
         numberProperty={numberProperty2}
         data={data2}

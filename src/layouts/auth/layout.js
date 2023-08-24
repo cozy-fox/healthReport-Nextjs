@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
-import NextLink from 'next/link';
 import { Box, Typography, Unstable_Grid2 as Grid } from '@mui/material';
-import { Logo } from 'src/components/logo';
 
 // TODO: Change subtitle text
 
@@ -30,28 +28,6 @@ export const Layout = (props) => {
             position: 'relative'
           }}
         >
-          <Box
-            component="header"
-            sx={{
-              left: 0,
-              p: 3,
-              position: 'fixed',
-              top: 0,
-              width: '100%'
-            }}
-          >
-            <Box
-              component={NextLink}
-              href="/"
-              sx={{
-                display: 'inline-flex',
-                height: 32,
-                width: 32
-              }}
-            >
-              <Logo />
-            </Box>
-          </Box>
           {children}
         </Grid>
         <Grid
@@ -68,37 +44,57 @@ export const Layout = (props) => {
             }
           }}
         >
-          <Box sx={{ p: 3 }}>
-            <Typography
+          <Box sx={{
+            p: 3,
+            backgroundImage: "url('/assets/auth-illustration.jpg')",
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+            height: "100%",
+            width: "100%",
+            display: 'flex', // Makes it a flex container
+            justifyContent: 'center', //Centers children on the line (this is optional)
+            alignItems: 'center',
+          }}>
+            <Box
               align="center"
-              color="inherit"
-              sx={{
-                fontSize: '24px',
-                lineHeight: '32px',
-                mb: 1
-              }}
-              variant="h1"
+              backgroundColor="rgba(255,255,255,0.6)"
+              pb={"10px"}
+              pt={"20px"}
             >
-              Welcome to{' '}
-              <Box
-                component="a"
-                sx={{ color: '#15B79E' }}
-                target="_blank"
+              <a href="https://www.netlinksdn.com" target="_blank" rel="noopener noreferrer">
+                <img
+                  src='/assets/logo.png'
+                  style={{ width: '50%', marginBottom: '20px', cursor: 'pointer' }}
+                />
+              </a>
+              <Typography
+                align="center"
+                color="black"
+                sx={{
+                  lineHeight: '32px',
+                  mb: 2
+                }}
+                variant="h3"
               >
-                Devias Kit
-              </Box>
-            </Typography>
-            <Typography
-              align="center"
-              sx={{ mb: 3 }}
-              variant="subtitle1"
-            >
-              A professional kit that comes with ready-to-use MUI components.
-            </Typography>
-            <img
-              alt=""
-              src="/assets/auth-illustration.svg"
-            />
+                Welcome to{' '}
+                <Box
+                  component="span"
+                  sx={{ color: 'rgba(99,102,241)' }}
+                >
+                  NetLinkSDN
+                </Box>
+              </Typography>
+              <Typography
+                align="center"
+                color="black"
+                sx={{ mb: 3 }}
+                variant="h6"
+              >
+                AMH DB HealthCare Check Monitor System
+              </Typography>
+            </Box>
+
           </Box>
         </Grid>
       </Grid>

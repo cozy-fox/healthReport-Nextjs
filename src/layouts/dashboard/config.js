@@ -5,16 +5,16 @@ import ShoppingBagIcon from '@heroicons/react/24/solid/ShoppingBagIcon';
 import UserIcon from '@heroicons/react/24/solid/UserIcon';
 import UserPlusIcon from '@heroicons/react/24/solid/UserPlusIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
-import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
+import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import { SvgIcon } from '@mui/material';
 
 export const items = [
   {
-    title: 'Oracle Database Overview',
+    title: 'Overview',
     path: '/',
     icon: (
       <SvgIcon fontSize="small">
-        <ChartBarIcon />
+        <ElectricBoltIcon />
       </SvgIcon>
     )
   },
@@ -23,7 +23,7 @@ export const items = [
     path: '/users',
     icon: (
       <SvgIcon fontSize="small">
-        <UsersIcon />
+        <ElectricBoltIcon />
       </SvgIcon>
     )
   },
@@ -32,7 +32,7 @@ export const items = [
     path: '/table_space',
     icon: (
       <SvgIcon fontSize="small">
-        <UsersIcon />
+        <ElectricBoltIcon />
       </SvgIcon>
     )
   },
@@ -41,43 +41,34 @@ export const items = [
     path: '/size_growth',
     icon: (
       <SvgIcon fontSize="small">
-        <UsersIcon />
+        <ElectricBoltIcon />
       </SvgIcon>
     )
   },
   {
-    title: 'Oracle Database Datafile SIZE',
+    title: 'Datafile SIZE',
     path: '/datafile',
     icon: (
       <SvgIcon fontSize="small">
-        <ShoppingBagIcon />
+        <ElectricBoltIcon />
       </SvgIcon>
     )
   },
   {
-    title: 'Oracle Database Parameters Utilization Min And Max',
+    title: 'Parameters Utilization Min And Max',
     path: '/database_parameter_size',
     icon: (
       <SvgIcon fontSize="small">
-        <ShoppingBagIcon />
+        <ElectricBoltIcon />
       </SvgIcon>
     )
   },
   {
-    title: 'Oracle Database CPU USED BY AMH',
+    title: 'CPU/DB Connection Utilization',
     path: '/used_cpu',
     icon: (
       <SvgIcon fontSize="small">
-        <ShoppingBagIcon />
-      </SvgIcon>
-    )
-  },
-  {
-    title: 'Oracle Database LISTENER STATUS',
-    path: '/listener',
-    icon: (
-      <SvgIcon fontSize="small">
-        <ShoppingBagIcon />
+        <ElectricBoltIcon />
       </SvgIcon>
     )
   },
@@ -86,7 +77,7 @@ export const items = [
     path: '/partition',
     icon: (
       <SvgIcon fontSize="small">
-        <ShoppingBagIcon />
+        <ElectricBoltIcon />
       </SvgIcon>
     )
   },
@@ -95,53 +86,8 @@ export const items = [
     path: '/incomplete',
     icon: (
       <SvgIcon fontSize="small">
-        <ShoppingBagIcon />
+        <ElectricBoltIcon />
       </SvgIcon>
     )
   },
-  // {
-  //   title: 'Account',
-  //   path: '/account',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <UserIcon />
-  //     </SvgIcon>
-  //   )
-  // },
-  // {
-  //   title: 'Settings',
-  //   path: '/settings',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <CogIcon />
-  //     </SvgIcon>
-  //   )
-  // },
-  // {
-  //   title: 'Login',
-  //   path: '/auth/login',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <LockClosedIcon />
-  //     </SvgIcon>
-  //   )
-  // },
-  // {
-  //   title: 'Register',
-  //   path: '/auth/register',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <UserPlusIcon />
-  //     </SvgIcon>
-  //   )
-  // },
-  // {
-  //   title: 'Error',
-  //   path: '/404',
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <XCircleIcon />
-  //     </SvgIcon>
-  //   )
-  // }
 ];

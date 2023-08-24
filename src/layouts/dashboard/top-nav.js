@@ -1,6 +1,8 @@
+import PropTypes from 'prop-types';
 import { StaticDateTimePicker } from '@mui/x-date-pickers/StaticDateTimePicker';
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -14,15 +16,25 @@ import {
   Tooltip,
   useMediaQuery
 } from '@mui/material';
+import { useContext } from 'react';
 import { alpha } from '@mui/material/styles';
 import { usePopover } from 'src/hooks/use-popover';
+import { AccountPopover } from './account-popover';
+import { useCalendar } from 'src/hooks/use-popCalendar';
+import { FileContext } from '../../utils/FileContext';
+import { useRouter } from 'next/router'
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
 
 export const TopNav = (props) => {
+  const { onNavOpen } = props;
+  const router = useRouter();
+  const { setRange, setSearch, setSort, search, sort, range } = useContext(FileContext);
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const accountPopover = usePopover();
+  const calendarPopover = useCalendar();
+
   return (
     <>
       <Box
@@ -31,9 +43,12 @@ export const TopNav = (props) => {
           backdropFilter: 'blur(6px)',
           backgroundColor: (theme) => alpha(theme.palette.background.default, 0.5),
           position: 'sticky',
+          left: {
+            lg: `${SIDE_NAV_WIDTH}px`
+          },
           top: 0,
           width: {
-            lg: `calc(100%)`
+            lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`
           },
           zIndex: (theme) => theme.zIndex.appBar
         }}
@@ -54,6 +69,13 @@ export const TopNav = (props) => {
             spacing={2}
             width="70%"
           >
+            {!lgUp && (
+              <IconButton onClick={onNavOpen}>
+                <SvgIcon fontSize="small">
+                  <Bars3Icon />
+                </SvgIcon>
+              </IconButton>
+            )}
             <SvgIcon fontSize="small">
               <MagnifyingGlassIcon />
             </SvgIcon>
@@ -68,8 +90,8 @@ export const TopNav = (props) => {
               }}
               placeholder="Search Oracle File"
               inputProps={{ 'aria-label': 'search file' }}
-              value={props.search}
-              onChange={e=>{ props.setSearch(e.target.value);}}
+              value={search}
+              onChange={e => { setSearch(e.target.value); }}
             />
           </Stack>
           <Stack
@@ -77,58 +99,73 @@ export const TopNav = (props) => {
             direction="row"
             spacing={2}
           >
+             {router.pathname === '/select_file' && (   
             <Tooltip title="Sort By Date Ranges">
               <IconButton
-                onClick={accountPopover.handleOpen}
-                ref={accountPopover.anchorRef}
-              >
-                {/* <Badge
-                  badgeContent={4}
-                  color="success"
-                  variant="dot"
-                > */}
-                  <SvgIcon fontSize="small">
-                    <CalendarMonthIcon />
-                  </SvgIcon>
-                {/* </Badge> */}
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Sort By Time">
-              <IconButton
-                onClick={()=>{props.sort==='recent'?props.setSort('late'):props.setSort('recent')}}
+                onClick={calendarPopover.handleOpen}
+                ref={calendarPopover.anchorRef}
               >
                 <SvgIcon fontSize="small">
-                  {props.sort=='recent'?<KeyboardDoubleArrowUpIcon />:<KeyboardDoubleArrowDownIcon />}
+                  <CalendarMonthIcon />
                 </SvgIcon>
               </IconButton>
-            </Tooltip>
+            </Tooltip>)}
+            {router.pathname === '/select_file' && (            
+            <Tooltip title="Sort By Time">
+              <IconButton
+                onClick={() => { sort === 'recent' ? setSort('late') : setSort('recent') }}
+              >
+                <SvgIcon fontSize="small">
+                  {sort == 'recent' ? <KeyboardDoubleArrowUpIcon /> : <KeyboardDoubleArrowDownIcon />}
+                </SvgIcon>
+              </IconButton>
+            </Tooltip>)}
+
+            <Avatar
+              onClick={accountPopover.handleOpen}
+              ref={accountPopover.anchorRef}
+              sx={{
+                cursor: 'pointer',
+                height: 40,
+                width: 40
+              }}
+              src="/assets/avatars/avatar-anika-visser.png"
+            />
           </Stack>
         </Stack>
-        <Popover
-          anchorEl={accountPopover.anchorRef.current}
-          anchorOrigin={{
-            horizontal: 'left',
-            vertical: 'bottom'
-          }}
-          onClose={accountPopover.handleClose}
-          open={accountPopover.open}
-        >
-          <Stack direction={"row"}>
-            <StaticDateTimePicker
-            value={props.range[0]}
-            onChange={(e)=>{props.setRange([e, props.range[1]]); console.log(props.range)}} 
-            orientation="landscape" 
-            />
-            <StaticDateTimePicker 
-            value={props.range[1]}
-            onChange={(e)=>{props.setRange([props.range[0], e]); console.log(props.range)}} 
-            orientation="landscape" 
-            />
-          </Stack>
-        </Popover>
       </Box>
+      <AccountPopover
+        anchorEl={accountPopover.anchorRef.current}
+        open={accountPopover.open}
+        onClose={accountPopover.handleClose}
+      />
 
+      <Popover
+        anchorEl={calendarPopover.anchorRef.current}
+        anchorOrigin={{
+          horizontal: 'left',
+          vertical: 'bottom'
+        }}
+        onClose={calendarPopover.handleClose}
+        open={calendarPopover.open}
+      >
+        <Stack direction={"row"}>
+          <StaticDateTimePicker
+            value={range[0]}
+            onChange={(e) => { setRange([e, range[1]]); console.log(range) }}
+            orientation="landscape"
+          />
+          <StaticDateTimePicker
+            value={range[1]}
+            onChange={(e) => { setRange([range[0], e]); console.log(range) }}
+            orientation="landscape"
+          />
+        </Stack>
+      </Popover>
     </>
   );
 };
 
+TopNav.propTypes = {
+  onNavOpen: PropTypes.func
+};

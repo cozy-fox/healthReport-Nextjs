@@ -46,7 +46,7 @@ const App = (props) => {
                     ? <SplashScreen />
                     : getLayout(<Component {...pageProps} />)
                 }
-              
+      {/* { getLayout(<Component {...pageProps} />)} */}
             </AuthConsumer>
           </ThemeProvider>
         </AuthProvider>

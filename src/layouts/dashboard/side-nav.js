@@ -10,7 +10,7 @@ import {
   useMediaQuery,
   ButtonBase
 } from '@mui/material';
-import { Logo } from 'src/components/logo';
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import { Scrollbar } from 'src/components/scrollbar';
 import { items } from './config';
 import { SideNavItem } from './side-nav-item';
@@ -43,7 +43,7 @@ export const SideNav = (props) => {
         }}
       >
         <Box sx={{ p: 3 }}>
-          <Box
+          {/* <Box
             component={NextLink}
             href="/"
             sx={{
@@ -53,7 +53,7 @@ export const SideNav = (props) => {
             }}
           >
             <Logo />
-          </Box>
+          </Box> */}
           <ButtonBase
             sx={{
               alignItems: 'center',
@@ -61,21 +61,22 @@ export const SideNav = (props) => {
               borderRadius: 1,
               cursor: 'pointer',
               display: 'flex',
-              justifyContent: 'space-between',
               mt: 2,
-              p: '12px'
+              p: '10px'
             }}
             component={NextLink}
             href="/select_file"
           >
-            <div>
-              <Typography
-                color="inherit"
-                variant="subtitle1"
-              >
-            Select File
-              </Typography>
-            </div>
+            <TextSnippetIcon />
+
+            <Typography
+              color="inherit"
+              variant="subtitle1"
+              sx={{pl:"10px"}}
+            >
+              Select File
+            </Typography>
+
           </ButtonBase>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
@@ -104,7 +105,7 @@ export const SideNav = (props) => {
                   active={active}
                   disabled={item.disabled}
                   external={item.external}
-                  // icon={item.icon}
+                  icon={item.icon}
                   key={item.title}
                   path={item.path}
                   title={item.title}

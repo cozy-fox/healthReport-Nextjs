@@ -1,9 +1,9 @@
 import fs from 'fs';
 import cheerio from 'cheerio';
+import withAuth from "../../server/utils/withAuth";
 
 
-
-export default function handler(req, res) {
+const handler=(req, res)=> {
   if (req.method === 'GET') {
     let result = {};
     const files = fs.readFileSync('public/files/' + req.query.fileName, 'utf8');
@@ -127,3 +127,5 @@ export default function handler(req, res) {
     // Handle any other HTTP method
   }
 }
+
+export default withAuth(handler);

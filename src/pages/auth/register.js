@@ -34,8 +34,22 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.signUp(values.email, values.name, values.password);
-        router.push('/');
+        auth.signUp(values.email, values.name, values.password).then(
+          response => {
+              // setAlert({ message: response.data.message, successful: true, open: true });
+              console.log('success',response.data.message);
+              router.push('/');
+          },
+          error => {
+            console.log('error',(error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+              error.message ||
+              error.toString());
+
+          }
+      );
+       
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });

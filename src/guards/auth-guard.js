@@ -24,11 +24,11 @@ export const AuthGuard = (props) => {
       if (ignore.current) {
         return;
       }
-
+      console.log('isAuthenticated',isAuthenticated);
       ignore.current = true;
 
       if (!isAuthenticated) {
-        console.log('Not authenticated, redirecting');
+
         router
           .replace({
             pathname: '/auth/login',

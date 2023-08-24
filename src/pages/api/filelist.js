@@ -1,6 +1,7 @@
 import fs from 'fs';
+import withAuth from "../../server/utils/withAuth";
 
-export default function handler(req, res) {
+const handler=(req, res)=> {
   if (req.method === 'GET') {
     const files = fs.readdirSync('public/files');
     // console.log(files);
@@ -9,3 +10,4 @@ export default function handler(req, res) {
     // Handle any other HTTP method
   }
 }
+export default withAuth(handler);

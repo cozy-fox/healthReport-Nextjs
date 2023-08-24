@@ -25,7 +25,7 @@ const Page = () => {
         </title>
       </Head>
       <Table
-        title={"Paritions Details AND Message Count"}
+        title={"Partitions Details AND Message Count"}
         property={property}
         numberProperty={numberProperty}
         data={data}

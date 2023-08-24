@@ -11,7 +11,6 @@ import { useContext } from 'react';
 import { FileContext } from '../utils/FileContext';
 import { useEffect, useState } from 'react';
 import config from "./../../global.config";
-import { TopNav } from './../layouts/dashboard/top-nav';
 
 const badgeStyle = {
   position: 'absolute',
@@ -24,12 +23,9 @@ const badgeStyle = {
 };
 
 const Page = () => {
-  const { latest } = useContext(FileContext);
+  const { latest, search, sort, range,setRange } = useContext(FileContext);
   const [files, setFiles] = useState([]);
   const [showFiles, setShowFiles] = useState([]);
-  const [search, setSearch] = useState('');
-  const [sort, setSort] = useState('recent');
-  const [range, setRange] = useState([null, null])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,14 +79,6 @@ const Page = () => {
   }, [search, sort, range, files])
   return (
     <>
-      <TopNav
-        search={search}
-        setSearch={setSearch}
-        sort={sort}
-        setSort={setSort}
-        range={range}
-        setRange={setRange}
-      />
       <Head>
         <title>
           Health Care Reports

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
-
+import config from "./../../global.config";
+import axios from "axios";
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
   SIGN_IN: 'SIGN_IN',
@@ -75,24 +76,21 @@ export const AuthProvider = (props) => {
     let isAuthenticated = false;
 
     try {
-      isAuthenticated = window.sessionStorage.getItem('authenticated') === 'true';
-      isAuthenticated = true;
+      isAuthenticated = localStorage.getItem("user")?true:false;
     } catch (err) {
       console.error(err);
     }
 
     if (isAuthenticated) {
-      const user = {
-        id: '5e86809283e28b96d2d38537',
-        avatar: '/assets/avatars/avatar-anika-visser.png',
-        name: 'Anika Visser',
-        email: 'anika.visser@devias.io'
-      };
+      const userStr = localStorage.getItem("user");
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        dispatch({
+          type: HANDLERS.INITIALIZE,
+          payload: user
+        });
+      }
 
-      dispatch({
-        type: HANDLERS.INITIALIZE,
-        payload: user
-      });
     } else {
       dispatch({
         type: HANDLERS.INITIALIZE
@@ -108,55 +106,44 @@ export const AuthProvider = (props) => {
     []
   );
 
-  const skip = () => {
-    try {
-      window.sessionStorage.setItem('authenticated', 'true');
-    } catch (err) {
-      console.error(err);
-    }
 
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
 
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
-    });
-  };
+  const signIn = async (name, password) => {
+    return axios.post(config.url + "/auth/signin", {
+      "username": name,
+      "password": password
+    }).then(response => {
+      if (response.data.token) {
 
-  const signIn = async (email, password) => {
-    if (email !== 'demo@devias.io' || password !== 'Password123!') {
-      throw new Error('Please check your email and password');
-    }
+        localStorage.setItem("user", JSON.stringify(response.data));
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+        const user = {
+          id: response.data.id,
+          name: response.data.username,
+          email: response.data.email
+        };
 
-    try {
-      window.sessionStorage.setItem('authenticated', 'true');
-    } catch (err) {
-      console.error(err);
-    }
-
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
-
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
+        dispatch({
+          type: HANDLERS.SIGN_IN,
+          payload: user
+        });
+      }
     });
   };
 
   const signUp = async (email, name, password) => {
-    throw new Error('Sign up is not implemented');
+    return axios.post(config.url + "/auth/signup", {
+      "username": name,
+      "email": email,
+      "password": password
+    })
+
+    // throw new Error('Sign up is not implemented');
   };
 
   const signOut = () => {
+    localStorage.removeItem("user");
+    delete axios.defaults.headers.common["Authorization"];
     dispatch({
       type: HANDLERS.SIGN_OUT
     });
@@ -166,7 +153,6 @@ export const AuthProvider = (props) => {
     <AuthContext.Provider
       value={{
         ...state,
-        skip,
         signIn,
         signUp,
         signOut

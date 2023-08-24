@@ -1,6 +1,7 @@
 import NextLink from 'next/link';
 import PropTypes from 'prop-types';
-import { Box, ButtonBase } from '@mui/material';
+import { Box, ButtonBase, Typography } from '@mui/material';
+
 
 export const SideNavItem = (props) => {
   const { active = false, disabled, external, icon, path, title } = props;
@@ -72,10 +73,15 @@ export const SideNavItem = (props) => {
             }),
             ...(disabled && {
               color: 'neutral.500'
-            })
+            }),
+            width: "220px",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
-          {title}
+            {title}
+
         </Box>
       </ButtonBase>
     </li>
