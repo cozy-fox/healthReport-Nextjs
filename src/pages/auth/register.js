@@ -6,8 +6,11 @@ import * as Yup from 'yup';
 import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
+import Alert from "./../../components/alert";
+import React, { useState } from 'react';
 
 const Page = () => {
+  const [alert, setAlert] = useState({ message: '', successful: true, open: false });
   const router = useRouter();
   const auth = useAuth();
   const formik = useFormik({
@@ -33,28 +36,23 @@ const Page = () => {
         .required('Password is required')
     }),
     onSubmit: async (values, helpers) => {
-      try {
+
         auth.signUp(values.email, values.name, values.password).then(
           response => {
-              // setAlert({ message: response.data.message, successful: true, open: true });
-              console.log('success',response.data.message);
+              setAlert({ message: response.data.message, successful: true, open: true });
               router.push('/');
           },
           error => {
-            console.log('error',(error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-              error.message ||
-              error.toString());
+            setAlert({
+              message: (error.response &&
+                  error.response.data &&
+                  error.response.data.message) ||
+                  error.message ||
+                  error.toString(), successful: false, open: true
+          });
 
           }
       );
-       
-      } catch (err) {
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
     }
   });
 
@@ -65,6 +63,7 @@ const Page = () => {
           Register | Devias Kit
         </title>
       </Head>
+      <Alert message={alert.message} successful={alert.successful} open={alert.open} handleClose={()=>{ setAlert({ ...alert, open: false });}} />
       <Box
         sx={{
           flex: '1 1 auto',

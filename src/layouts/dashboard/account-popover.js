@@ -39,11 +39,11 @@ export const AccountPopover = (props) => {
           Account
         </Typography>
         <Typography
-          color="text.secondary"
-          variant="body2"
-        >
-          Anika Visser
-        </Typography>
+  color="text.secondary"
+  variant="body2"
+>
+  {auth?.user?.username ? auth.user.username : ''}
+</Typography>
       </Box>
       <Divider />
       <MenuList

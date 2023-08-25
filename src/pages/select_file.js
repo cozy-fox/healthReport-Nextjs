@@ -11,6 +11,7 @@ import { useContext } from 'react';
 import { FileContext } from '../utils/FileContext';
 import { useEffect, useState } from 'react';
 import config from "./../../global.config";
+import axios from "axios";
 
 const badgeStyle = {
   position: 'absolute',
@@ -30,26 +31,24 @@ const Page = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(config.url + '/filelist');
-        let maxDate=new Date(1970,0,1);
-        let minDate=new Date(2100,0,1);
-        if (response.ok) {
-          const data = await response.json();
-          setFiles(data.files.map(each => {
-            const currentdate=new Date(parseInt(each.slice(7, 11)), parseInt(each.slice(5, 7))-1, parseInt(each.slice(3, 5)), parseInt(each.slice(12, 14)), parseInt(each.slice(14, 16)));
-            if (currentdate>maxDate) maxDate=currentdate;
-            if (currentdate<minDate) minDate=currentdate;
-            return {
-              name: each,
-              date: currentdate
-            }
-          }));
-          setRange([minDate, maxDate]);
-        } else {
-          console.error('Request failed with status:', response.status);
-        }
+        const response = await axios.get(config.url + '/filelist');
+        let maxDate = new Date(1970,0,1);
+        let minDate = new Date(2100,0,1);
+      
+        const data = response.data;
+        setFiles(data.files.map(each => {
+          const currentdate = new Date(parseInt(each.slice(7, 11)), parseInt(each.slice(5, 7)) - 1, parseInt(each.slice(3, 5)), parseInt(each.slice(12, 14)), parseInt(each.slice(14, 16)));
+          if (currentdate > maxDate) maxDate = currentdate;
+          if (currentdate < minDate) minDate = currentdate;
+          return {
+            name: each,
+            date: currentdate
+          }
+        }));
+        setRange([minDate, maxDate]);
+      
       } catch (error) {
-        console.error('Error fetching file list:', error);
+        console.error(error);
       }
     };
 

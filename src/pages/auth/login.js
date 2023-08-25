@@ -13,14 +13,17 @@ import {
 } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
+import Alert from "./../../components/alert";
+import React, { useState } from 'react';
 
 const Page = () => {
+  const [alert, setAlert] = useState({ message: '', successful: true, open: false });
   const router = useRouter();
   const auth = useAuth();
   const formik = useFormik({
     initialValues: {
-      username: 'peter',
-      password: '0p;/)P:?',
+      username: '',
+      password: '',
       submit: null
     },
     validationSchema: Yup.object({
@@ -34,14 +37,24 @@ const Page = () => {
         .required('Password is required')
     }),
     onSubmit: async (values, helpers) => {
-      try {
-        await auth.signIn(values.username, values.password);
-        router.push('/');
-      } catch (err) {
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
+      await auth.signIn(values.username, values.password).then(
+        () => {
+          setAlert({ message: "Login Successfully", successful: true, open: true });
+          router.push('/');
+        },
+        error => {
+          helpers.setStatus({ success: false });
+          helpers.setSubmitting(false);
+          const resMessage =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+          setAlert({ message: resMessage, successful: false, open: true });
+
+        }
+      );
     }
   });
 
@@ -52,6 +65,7 @@ const Page = () => {
           Login | Devias Kit
         </title>
       </Head>
+      <Alert message={alert.message} successful={alert.successful} open={alert.open} handleClose={()=>{ setAlert({ ...alert, open: false });}} />
       <Box
         sx={{
           backgroundColor: 'background.paper',
@@ -93,53 +107,53 @@ const Page = () => {
                 </Link>
               </Typography>
             </Stack>
-              <form
-                noValidate
-                onSubmit={formik.handleSubmit}
-              >
-                <Stack spacing={3}>
-                  <TextField
-                    error={!!(formik.touched.username && formik.errors.username)}
-                    fullWidth
-                    helperText={formik.touched.username && formik.errors.username}
-                    label="Username"
-                    name="username"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.username}
-                  />
-                  <TextField
-                    error={!!(formik.touched.password && formik.errors.password)}
-                    fullWidth
-                    helperText={formik.touched.password && formik.errors.password}
-                    label="Password"
-                    name="password"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    type="password"
-                    value={formik.values.password}
-                  />
-                </Stack>
-                {formik.errors.submit && (
-                  <Typography
-                    color="error"
-                    sx={{ mt: 3 }}
-                    variant="body2"
-                  >
-                    {formik.errors.submit}
-                  </Typography>
-                )}
-                <Button
+            <form
+              noValidate
+              onSubmit={formik.handleSubmit}
+            >
+              <Stack spacing={3}>
+                <TextField
+                  error={!!(formik.touched.username && formik.errors.username)}
                   fullWidth
-                  size="large"
+                  helperText={formik.touched.username && formik.errors.username}
+                  label="Username"
+                  name="username"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.username}
+                />
+                <TextField
+                  error={!!(formik.touched.password && formik.errors.password)}
+                  fullWidth
+                  helperText={formik.touched.password && formik.errors.password}
+                  label="Password"
+                  name="password"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  type="password"
+                  value={formik.values.password}
+                />
+              </Stack>
+              {formik.errors.submit && (
+                <Typography
+                  color="error"
                   sx={{ mt: 3 }}
-                  type="submit"
-                  variant="contained"
+                  variant="body2"
                 >
-                  Continue
-                </Button>
-              </form>
-        
+                  {formik.errors.submit}
+                </Typography>
+              )}
+              <Button
+                fullWidth
+                size="large"
+                sx={{ mt: 3 }}
+                type="submit"
+                variant="contained"
+              >
+                Continue
+              </Button>
+            </form>
+
           </div>
         </Box>
       </Box>

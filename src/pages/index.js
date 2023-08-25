@@ -6,6 +6,7 @@ import { FileContext } from '../utils/FileContext';
 import { useContext, useEffect, useState } from 'react';
 import { beautifulStringStyles } from "../styles/index";
 import config from "./../../global.config";
+import axios from "axios";
 
 const Page = () => {
   const { setLatest, setSelectedFile, selectedContent, setSelectedContent } = useContext(FileContext);
@@ -49,22 +50,16 @@ const Page = () => {
 
     const fetchData = async () => {
       try {
-        const response = await fetch(config.url + '/latestFile');
-        if (response.ok) {
-          const data = await response.json();
-          setLatest(data.result);
-          setSelectedFile(data.result);
-          const response1 = await fetch(config.url + '/file?fileName=' + data.result);
-          if (response1.ok) {
-            const data1 = await response1.json();
-            setSelectedContent(data1.result);
-            setTrafficLight(data1.result.listener);
-            setSuccess(true);
-          } else {
-            console.error('Error fetching file:', response1.status);
-            setSuccess(false);
-          }
-        }
+        const response = await axios.get(config.url + '/latestFile');
+        const data = response.data;
+        setLatest(data.result);
+        setSelectedFile(data.result);
+      
+        const response1 = await axios.get(config.url + '/file?fileName=' + data.result);
+        const data1 = response1.data;
+        setSelectedContent(data1.result);
+        setTrafficLight(data1.result.listener);
+        setSuccess(true);
       } catch (error) {
         console.error('Error fetching file list:', error);
       }

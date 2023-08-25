@@ -85,6 +85,7 @@ export const AuthProvider = (props) => {
       const userStr = localStorage.getItem("user");
       if (userStr) {
         const user = JSON.parse(userStr);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${user.token}`;
         dispatch({
           type: HANDLERS.INITIALIZE,
           payload: user

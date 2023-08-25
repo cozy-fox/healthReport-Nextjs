@@ -4,19 +4,20 @@ import {  Card, CardContent, Divider, Stack, SvgIcon, Button, Typography } from 
 import { FileContext } from '../../utils/FileContext';
 import { useContext } from 'react';
 import config from "./../../../global.config";
+import axios from "axios";
 
 export const CompanyCard = (props) => {
   const { selectedFile, setSelectedFile, setSelectedContent } = useContext(FileContext);
 
   const { company } = props;
   const analysisFile = async (file) => {
-    setSelectedFile(file);
-    const response = await fetch(config.url + '/file?fileName=' + file);
-    if (response.ok) {
-      const data = await response.json();
+    try {
+      setSelectedFile(file);
+      const response = await axios.get(config.url + '/file?fileName=' + file);
+      const data = response.data;
       setSelectedContent(data.result);
-    } else {
-      console.error('Error fetching file:', response.status);
+    } catch (error) {
+      console.error('Error fetching file:', error.response.status);
     }
   }
   return (
